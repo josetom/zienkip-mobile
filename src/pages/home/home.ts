@@ -7,10 +7,13 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-	title: string;
+	title: string = 'Home';
+
+	latitude: number = 13.0353193;
+	longitude: number = 80.250078;
 
 	constructor(public navCtrl: NavController) {
-		this.title = "Beecon Fleet"
+
 	}
 
 }
