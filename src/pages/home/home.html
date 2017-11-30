@@ -3,5 +3,9 @@
 </ion-header>
 
 <ion-content>
-  <maps [latitude]="latitude" [longitude]="longitude"></maps>
+  <div class="floating-search">
+    <ui-creator type="autocomplete"></ui-creator>
+  </div>
+
+  <maps [latitude]="latitude" [longitude]="longitude" streetViewControl="true" mapTypeControl="true" fullscreenControl="true"></maps>
 </ion-content>
