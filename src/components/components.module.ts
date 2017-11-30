@@ -6,14 +6,19 @@ import { PageTopComponent } from './page-top/page-top';
 import { MapsComponent } from './maps/maps';
 
 @NgModule({
-	declarations: [PageTopComponent,
-		MapsComponent],
-	imports: [IonicModule.forRoot(ComponentsModule),
-	AgmCoreModule.forRoot({
-		apiKey: 'AIzaSyBZwjtfxXrP_lYHayzysutAU8ucbrwky-E'
-	})
+	declarations: [
+		PageTopComponent,
+		MapsComponent
 	],
-	exports: [PageTopComponent,
-		MapsComponent]
+	imports: [
+		IonicModule.forRoot(ComponentsModule),
+		AgmCoreModule.forRoot({
+			apiKey: 'AIzaSyBZwjtfxXrP_lYHayzysutAU8ucbrwky-E'
+		})
+	],
+	exports: [
+		PageTopComponent,
+		MapsComponent
+	]
 })
 export class ComponentsModule { }

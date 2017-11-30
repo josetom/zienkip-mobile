@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { Beecon } from './app.component';
-import { HomePageModule } from '../pages/home/home.module';
+import { RootPageModule } from '../pages/root/root.module';
 import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { ComponentsModule } from '../components/components.module';
 		BrowserModule,
 		HttpClientModule,
 		IonicModule.forRoot(Beecon),
-		HomePageModule,
+		RootPageModule,
 		ComponentsModule
 	],
 	bootstrap: [IonicApp],

@@ -1,0 +1,17 @@
+<ion-nav id="nav" [root]="rootPage" #nav swipeBackEnabled="false"></ion-nav>
+
+<ion-menu [content]="nav" persistent="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Beecon</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      {{p.title}}
+    </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
