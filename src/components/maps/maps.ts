@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
 	selector: 'maps',
 	templateUrl: 'maps.html',
-	// styles: ['maps.scss']
+	// styleUrls: ['maps.scss']
 })
 export class MapsComponent {
 
