@@ -6,12 +6,14 @@ import { NgPipesModule } from 'ng-pipes';
 import { PageTopComponent } from './page-top/page-top';
 import { MapsComponent } from './maps/maps';
 import { UiCreatorComponent } from './ui-creator/ui-creator';
+import { AutocompleteComponent } from './autocomplete/autocomplete';
 
 @NgModule({
 	declarations: [
 		PageTopComponent,
 		MapsComponent,
-		UiCreatorComponent
+		UiCreatorComponent,
+		AutocompleteComponent
 	],
 	imports: [
 		IonicModule.forRoot(ComponentsModule),
@@ -23,7 +25,8 @@ import { UiCreatorComponent } from './ui-creator/ui-creator';
 	exports: [
 		PageTopComponent,
 		MapsComponent,
-		UiCreatorComponent
+		UiCreatorComponent,
+		AutocompleteComponent
 	]
 })
 export class ComponentsModule { }

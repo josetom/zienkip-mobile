@@ -1,0 +1,8 @@
+<ion-searchbar [(ngModel)]="input" class="autocomplete-search" (ionFocus)="onFocus()" (ionBlur)="onBlur()">
+</ion-searchbar>
+<ion-card class="autocomplete-list-card">
+  <ion-list *ngIf="showAutocompleteSuggestions">
+    <ion-item *ngFor="let option of options | fuzzy:input">
+    </ion-item>
+  </ion-list>
+</ion-card>
