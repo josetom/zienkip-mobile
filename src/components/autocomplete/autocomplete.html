@@ -1,9 +1,11 @@
-<ion-searchbar [(ngModel)]="input" class="autocomplete-search" (ionFocus)="onFocus()" (ionBlur)="onBlur()">
-</ion-searchbar>
-<ion-card class="autocomplete-list-card">
-  <ion-list *ngIf="showAutocompleteSuggestions">
-    <ion-item class="autocomplete-item" *ngFor="let option of options | fuzzy:input" (click)="onItemClick($event, this)">
+<div tabindex="1" (ionBlur)="onBlur()">
+  <ion-searchbar [(ngModel)]="inputText" class="autocomplete-search" [showCancelButton]="true" (ionFocus)="onFocus()" (ionCancel)="onBlur()">
+  </ion-searchbar>
+  <ion-card class="autocomplete-list-card">
+    <ion-list *ngIf="showAutocompleteSuggestions">
+      <button ion-item class="autocomplete-item" *ngFor="let option of options | fuzzy:inputText" (click)="onItemClick($event, option)">
       {{option.a}}
-    </ion-item>
-  </ion-list>
-</ion-card>
+  </button>
+    </ion-list>
+  </ion-card>
+</div>

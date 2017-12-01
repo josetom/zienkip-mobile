@@ -8,6 +8,8 @@ export class AutocompleteComponent {
 
 	@Input() options: Object[];
 
+	inputText: string;
+
 	showAutocompleteSuggestions: boolean = false;
 
 	onFocus: Function = () => {
@@ -17,8 +19,10 @@ export class AutocompleteComponent {
 		this.showAutocompleteSuggestions = false;
 	}
 
-	onItemClick: Function = (event: Event, caller: Object) => {
+	onItemClick: Function = (event: Event, caller: any) => {
 		console.log(event, caller);
+		this.inputText = caller.a;
+		this.onBlur();
 	}
 
 	constructor() {
