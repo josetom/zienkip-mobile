@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 export class UiCreatorComponent {
 
 	@Input() type: string;
+	@Input() options: Object[];
 
 	constructor() {
 

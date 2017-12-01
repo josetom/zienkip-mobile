@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
 	selector: 'autocomplete',
@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 })
 export class AutocompleteComponent {
 
-	options: Object[] = [{ a: 'a' }, { a: 'b' }, { a: 'c' }];
+	@Input() options: Object[];
 
 	showAutocompleteSuggestions: boolean = false;
 
@@ -15,6 +15,10 @@ export class AutocompleteComponent {
 	}
 	onBlur: Function = () => {
 		this.showAutocompleteSuggestions = false;
+	}
+
+	onItemClick: Function = (event: Event, caller: Object) => {
+		console.log(event, caller);
 	}
 
 	constructor() {

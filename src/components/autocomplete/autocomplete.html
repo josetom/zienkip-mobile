@@ -2,7 +2,8 @@
 </ion-searchbar>
 <ion-card class="autocomplete-list-card">
   <ion-list *ngIf="showAutocompleteSuggestions">
-    <ion-item *ngFor="let option of options | fuzzy:input">
+    <ion-item class="autocomplete-item" *ngFor="let option of options | fuzzy:input" (click)="onItemClick($event, this)">
+      {{option.a}}
     </ion-item>
   </ion-list>
 </ion-card>
