@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { UtilitiesProvider } from '../../providers/utilities/utilities'
-
+import { UtilitiesProvider } from '../../../providers/utilities/utilities'
 @Component({
-	selector: 'page-home',
-	templateUrl: 'home.html'
+	selector: 'page-fleet-home',
+	templateUrl: 'fleet-home.html',
 })
-export class HomePage {
+export class FleetHomePage {
 
 	title: string = 'Home';
 

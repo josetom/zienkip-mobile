@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
 import { RootPage } from './root';
-import { HomePageModule } from '../home/home.module';
+import { FleetPageModule } from '../fleet/fleet.module';
 
 @NgModule({
 	declarations: [
@@ -10,7 +10,7 @@ import { HomePageModule } from '../home/home.module';
 	],
 	imports: [
 		IonicPageModule.forChild(RootPage),
-		HomePageModule
+		FleetPageModule
 	],
 })
 export class RootPageModule { }

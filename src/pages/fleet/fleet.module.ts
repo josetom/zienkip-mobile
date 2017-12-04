@@ -3,18 +3,22 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { ComponentsModule } from '../../components/components.module';
 import { UtilitiesProvider } from '../../providers/utilities/utilities'
-import { HomePage } from './home';
+
+import { FleetHomePage } from './fleet-home/fleet-home';
+import { FleetManagementPage } from './fleet-management/fleet-management';
 
 @NgModule({
 	declarations: [
-		HomePage,
+		FleetHomePage,
+		FleetManagementPage
 	],
 	imports: [
-		ComponentsModule,
-		IonicPageModule.forChild(HomePage),
+		IonicPageModule.forChild(FleetHomePage),
+		IonicPageModule.forChild(FleetManagementPage),
+		ComponentsModule
 	],
 	providers: [
 		UtilitiesProvider
 	]
 })
-export class HomePageModule { }
+export class FleetPageModule { }

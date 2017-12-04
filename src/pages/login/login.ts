@@ -21,20 +21,22 @@ export class LoginPage {
 
 	user: Employee = new Employee();
 
-
 	private loginSuccess: Function = (data) => {
 		if (data.token) {
 			this.LOGGER.debug("login successful", data);
+
 			var tokenString = JSON.stringify(data.token);
 			if (tokenString) {
 				var token = tokenString.substring(1, tokenString.length - 1);
 				this.storage.set("kipenzi-token", token);
 			}
+
 			this.staticData.bos = data.bos;
 			var boString = JSON.stringify(data.bos);
 			if (boString) {
 				this.storage.set("kipenzi-bos", boString);
 			}
+
 			this.navCtrl.push(RootPage);
 
 		} else {
