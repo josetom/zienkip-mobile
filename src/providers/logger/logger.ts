@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 // Define the interface that all loggers must implement.
 export interface ILogger {
-	assert(...args: any[]): any;
 	error(...args: any[]): any;
 	info(...args: any[]): any;
 	log(...args: any[]): any;
@@ -10,16 +9,12 @@ export interface ILogger {
 	debug(...args: any[]): any;
 }
 
-
-@Injectable()
 // Set up the default logger. The default logger doesn't actually log anything; but, it
 // provides the Dependency-Injection (DI) token that the rest of the application can use
 // for dependency resolution. Each platform can then override this with a platform-
 // specific logger implementation, like the ConsoleLogService (below).
+@Injectable()
 export class LoggerProvider implements ILogger {
-
-
-	public assert: any = console.assert.bind(console);
 
 
 	public error: any = console.error.bind(console);

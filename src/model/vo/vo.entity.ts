@@ -1,4 +1,1 @@
-export class Employee {
-	email: string;
-	password: string;
-}
+export { Employee } from './entity/vo.entity.employee';

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { UtilitiesProvider } from '../../../providers/utilities/utilities'
+
+import { FleetManagementService } from '../fleet-management/fleet-management.service';
+
 @Component({
 	selector: 'page-fleet-home',
 	templateUrl: 'fleet-home.html',
@@ -15,8 +18,12 @@ export class FleetHomePage {
 
 	options: Object[] = [{ a: 'Jose Tom' }, { a: 'Ashwin' }, { a: 'Prashanth' }];
 
-	constructor(public navCtrl: NavController, public utils: UtilitiesProvider) {
+	constructor(public navCtrl: NavController, public utils: UtilitiesProvider, private fleetManagementService: FleetManagementService) {
 
+	}
+
+	ionViewDidLoad() {
+		this.fleetManagementService.loadData(false);
 	}
 
 }

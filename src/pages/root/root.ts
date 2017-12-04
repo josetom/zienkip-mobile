@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { StaticDataProvider } from '../../providers/static-data/static-data';
+
 import { FleetHomePage } from '../fleet/fleet-home/fleet-home';
 
 @IonicPage()
@@ -19,7 +21,7 @@ export class RootPage {
 		});
 	};
 
-	constructor(public navCtrl: NavController, public navParams: NavParams) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, private staticData: StaticDataProvider) {
 	}
 
 	ionViewDidLoad() {

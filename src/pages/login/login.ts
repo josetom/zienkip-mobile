@@ -25,19 +25,20 @@ export class LoginPage {
 		if (data.token) {
 			this.LOGGER.debug("login successful", data);
 
+			StaticDataProvider.token = data.token;
 			var tokenString = JSON.stringify(data.token);
 			if (tokenString) {
 				var token = tokenString.substring(1, tokenString.length - 1);
 				this.storage.set("kipenzi-token", token);
 			}
 
-			this.staticData.bos = data.bos;
+			StaticDataProvider.bos = data.bos;
 			var boString = JSON.stringify(data.bos);
 			if (boString) {
 				this.storage.set("kipenzi-bos", boString);
 			}
 
-			this.navCtrl.push(RootPage);
+			this.navCtrl.push(RootPage, { token: token });
 
 		} else {
 			this.loginFailure(data);

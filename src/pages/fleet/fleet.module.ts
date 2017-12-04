@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
-import { ComponentsModule } from '../../components/components.module';
+import { LoggerProvider } from '../../providers/logger/logger'
 import { UtilitiesProvider } from '../../providers/utilities/utilities'
+
+import { ComponentsModule } from '../../components/components.module';
 
 import { FleetHomePage } from './fleet-home/fleet-home';
 import { FleetManagementPage } from './fleet-management/fleet-management';
+import { FleetManagementService } from './fleet-management/fleet-management.service';
 
 @NgModule({
 	declarations: [
@@ -18,7 +21,9 @@ import { FleetManagementPage } from './fleet-management/fleet-management';
 		ComponentsModule
 	],
 	providers: [
-		UtilitiesProvider
+		LoggerProvider,
+		UtilitiesProvider,
+		FleetManagementService
 	]
 })
 export class FleetPageModule { }
