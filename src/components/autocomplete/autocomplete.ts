@@ -20,7 +20,6 @@ export class AutocompleteComponent {
 	}
 
 	onItemClick: Function = (event: Event, caller: any) => {
-		console.log(event, caller);
 		this.inputText = caller.a;
 		this.onBlur();
 	}
