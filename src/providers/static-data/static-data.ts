@@ -16,7 +16,7 @@ export class StaticDataProvider {
 	}
 
 	constructor(public http: HttpClient, private LOGGER: LoggerProvider) {
-		this.LOGGER.debug("in static data provider")
+		// this.LOGGER.debug("in static data provider")
 	}
 
 }

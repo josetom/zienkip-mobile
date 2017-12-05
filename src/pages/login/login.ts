@@ -79,7 +79,7 @@ export class LoginPage {
 
 	}
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage, private staticData: StaticDataProvider) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage) {
 	}
 
 }

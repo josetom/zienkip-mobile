@@ -46,7 +46,9 @@ export class FleetManagementService implements IManagement {
 					type: "profile",
 					subtype: "vehicle"
 				},
-				bo: "bo_trade_fleet_management",
+				bo: {
+					id: "bo_trade_fleet_management"
+				},
 				resolveDeps: false
 			};
 

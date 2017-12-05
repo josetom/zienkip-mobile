@@ -16,7 +16,7 @@ export class FleetHomePage {
 	latitude: number = 13.0353193;
 	longitude: number = 80.250078;
 
-	options: Object[] = [{ a: 'Jose Tom' }, { a: 'Ashwin' }, { a: 'Prashanth' }];
+	data: any = this.fleetManagementService.data;
 
 	constructor(public navCtrl: NavController, public utils: UtilitiesProvider, private fleetManagementService: FleetManagementService) {
 
