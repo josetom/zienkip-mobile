@@ -4,7 +4,7 @@
 
 <ion-content>
   <div class="floating-search">
-    <ui-creator type="autocomplete"></ui-creator>
+    <ui-creator type="autocomplete" [options]="data.items"></ui-creator>
   </div>
 
   <maps [latitude]="latitude" [longitude]="longitude" streetViewControl="true" mapTypeControl="true" fullscreenControl="true"></maps>
