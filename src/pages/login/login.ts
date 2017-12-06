@@ -21,23 +21,25 @@ export class LoginPage {
 
 	user: Employee = new Employee();
 
+	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage) {
+	}
+
 	private loginSuccess: Function = (data) => {
 		if (data.token) {
 			this.LOGGER.debug("login successful", data);
 
-			StaticDataProvider.token = data.token;
 			var tokenString = JSON.stringify(data.token);
 			if (tokenString) {
 				var token = tokenString.substring(1, tokenString.length - 1);
 				this.storage.set("kipenzi-token", token);
 			}
 
-			StaticDataProvider.bos = data.bos;
 			var boString = JSON.stringify(data.bos);
 			if (boString) {
 				this.storage.set("kipenzi-bos", boString);
 			}
 
+			this.utils.postLogin(data.token, data.bos);
 			this.navCtrl.push(RootPage, { token: token });
 
 		} else {
@@ -77,9 +79,6 @@ export class LoginPage {
 		this.utils.httpRequest(Constants.HTTP_POST, Constants.URL_LOGIN, data).subscribe(this.loginSuccess, this.loginFailure);
 
 
-	}
-
-	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage) {
 	}
 
 }

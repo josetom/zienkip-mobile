@@ -9,6 +9,10 @@ import { UtilitiesProvider } from '../../../providers/utilities/utilities';
 @Injectable()
 export class FleetManagementService implements IManagement {
 
+	constructor(private LOGGER: LoggerProvider, private utils: UtilitiesProvider) {
+
+	}
+
 	data: IManagementData = {
 		items: [],
 		reportParams: [],
@@ -59,9 +63,5 @@ export class FleetManagementService implements IManagement {
 		}
 
 	};
-
-	constructor(private LOGGER: LoggerProvider, private utils: UtilitiesProvider) {
-
-	}
 
 }
