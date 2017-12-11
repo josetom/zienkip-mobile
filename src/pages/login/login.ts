@@ -20,6 +20,7 @@ import { RootPage } from '../root/root';
 export class LoginPage {
 
 	user: Employee = new Employee();
+	domain: string = window.location.origin;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage) {
 	}
@@ -73,7 +74,8 @@ export class LoginPage {
 		let data: any = {
 			username: this.user.email,
 			password: this.user.password,
-			device: Constants.DEVICE
+			device: Constants.DEVICE,
+			domain: window.location.origin
 		}
 
 		this.utils.httpRequest(Constants.HTTP_POST, Constants.URL_LOGIN, data).subscribe(this.loginSuccess, this.loginFailure);
