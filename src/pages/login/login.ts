@@ -20,7 +20,6 @@ import { RootPage } from '../root/root';
 export class LoginPage {
 
 	user: Employee = new Employee();
-	domain: string = window.location.origin;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage) {
 	}
