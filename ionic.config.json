@@ -1,6 +1,12 @@
 {
-  "name": "kipenzi-mobile",
-  "app_id": "e7f17d86",
-  "type": "ionic-angular",
-  "integrations": {}
+	"name": "kipenzi-mobile",
+	"app_id": "e7f17d86",
+	"type": "ionic-angular",
+	"integrations": {
+		"cordova": {}
+	},
+	"proxies": [{
+		"path": "/api",
+		"proxyUrl": "http://Joses-MacBook-Pro.local:8765/api/"
+	}]
 }
