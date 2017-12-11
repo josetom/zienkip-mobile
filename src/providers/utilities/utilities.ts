@@ -1,16 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { catchError, map, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
+import { Platform, AlertController } from 'ionic-angular';
 
 import { LoggerProvider } from '../logger/logger';
 import { StaticDataProvider } from '../static-data/static-data';
 
+// import { PushNotification } from '../../native/push-notification/push-notification';
+
 @Injectable()
 export class UtilitiesProvider {
 
-	constructor(private http: HttpClient, private LOGGER: LoggerProvider) {
+	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private platform: Platform, private alertCtrl: AlertController, private storage: Storage) {
 
 	}
 
@@ -70,6 +72,35 @@ export class UtilitiesProvider {
 	postLogin: Function = (token: string, bos: any): void => {
 		StaticDataProvider.token = token;
 		StaticDataProvider.bos = bos;
+
+		var tokenString = JSON.stringify(token);
+		if (tokenString) {
+			var token = tokenString.substring(1, tokenString.length - 1);
+			this.storage.set('kipenzi-token', token);
+		}
+
+		var boString = JSON.stringify(bos);
+		if (boString) {
+			this.storage.set('kipenzi-bos', boString);
+		}
+
+		this.initNativeComponents();
+	}
+
+	showAlert: Function = (title: string, message: string, buttons: Array<string>) => {
+		this.alertCtrl.create({
+			title: title,
+			subTitle: message,
+			buttons: buttons
+		}).present();
+	}
+
+
+	private initNativeComponents: Function = () => {
+		this.LOGGER.debug("Initializing native plugins", this.platform);
+		if (this.platform.is('cordova')) {
+			// PushNotification.init();
+		}
 	}
 
 }

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 
 import { LoggerProvider } from '../../providers/logger/logger';
 import { UtilitiesProvider } from '../../providers/utilities/utilities';
@@ -21,51 +20,39 @@ export class LoginPage {
 
 	user: Employee = new Employee();
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider, private storage: Storage) {
+	loginAlert: any = {
+		visible: false,
+		alertTitle: 'Login Failed',
+		alertText: 'Unable to login. Please contact support'
+	};
+
+	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider) {
 	}
 
 	private loginSuccess: Function = (data) => {
 		if (data.token) {
-			this.LOGGER.debug("login successful", data);
-
-			var tokenString = JSON.stringify(data.token);
-			if (tokenString) {
-				var token = tokenString.substring(1, tokenString.length - 1);
-				this.storage.set("kipenzi-token", token);
-			}
-
-			var boString = JSON.stringify(data.bos);
-			if (boString) {
-				this.storage.set("kipenzi-bos", boString);
-			}
+			this.LOGGER.debug('login successful', data);
 
 			this.utils.postLogin(data.token, data.bos);
-			this.navCtrl.push(RootPage, { token: token });
+			this.navCtrl.push(RootPage, { token: data.token });
 
 		} else {
 			this.loginFailure(data);
 		}
 
-		// else {
-		// 	if (data && data.errorType == "beeconAppError") {
-		// 		sweetAlert({
-		// 			title: "Oops !",
-		// 			text: data.message || "Unable to login. Please contact support",
-		// 			type: "error"
-		// 		});
-		// 	} else {
-		// 		$scope.showLoginAlert = true;
-		// 	}
-		// },
 	}
 
 	private loginFailure: Function = (data) => {
-		this.LOGGER.debug("login failed", data);
-		// sweetAlert({
-		// 			title: "Oops !",
-		// 			text: "Unable to login. Please contact support",
-		// 			type: "error"
-		// 		});
+		this.LOGGER.debug('login failed', data);
+		if (data && data.errorType == 'beeconAppError') {
+			this.loginAlert.visible = true;
+			this.loginAlert.alertText = data.message || 'Unable to login. Please contact support';
+		} else {
+			this.loginAlert.visible = true;
+			this.loginAlert.alertText = data.message || 'Unable to login. Please contact support';
+		}
+		this.utils.showAlert(this.loginAlert.alertTitle, this.loginAlert.alertText, ['OK']);
+
 	}
 
 	login: Function = () => {
@@ -78,7 +65,6 @@ export class LoginPage {
 		}
 
 		this.utils.httpRequest(Constants.HTTP_POST, Constants.URL_LOGIN, data).subscribe(this.loginSuccess, this.loginFailure);
-
 
 	}
 
