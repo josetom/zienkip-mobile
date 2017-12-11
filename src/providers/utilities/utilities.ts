@@ -34,6 +34,34 @@ export class UtilitiesProvider {
 	}
 
 	/**
+	 * Checks if a given object is empty or not
+	 *
+	 * @param obj : object to be checked
+	 *
+	 * @return boolean
+	 **/
+	isEmpty = function(obj) {
+		if (obj == null) return true;
+		if (typeof obj === "boolean") return false;
+		else if (obj instanceof String) {
+			if (obj.trim().length > 0) return false;
+			if (obj.trim().length === 0) return true;
+		} else if (obj instanceof Date) {
+			return "Invalid Date" == obj.toString();
+		} else if (typeof obj == "number") {
+			return isNaN(obj);
+		} else {
+			if (obj.length > 0) return false;
+			if (obj.length === 0) return true;
+		}
+		for (var key in obj) {
+			if (Object.hasOwnProperty.call(obj, key)) return false;
+		}
+
+		return true;
+	};
+
+	/**
 	 * Function to set token and bos
 	 *
 	 * @param token : Token string

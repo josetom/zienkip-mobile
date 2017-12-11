@@ -1,4 +1,6 @@
-<agm-map [latitude]="latitude" [longitude]="longitude" mapTypeControl="mapTypeControl" [mapTypeControlOptions]="mapTypeControlOptions" streetViewControl="streetViewControl" [streetViewControlOptions]="streetViewControlOptions" fullscreenControl="fullscreenControl"
-    [fullscreenControlOptions]="fullscreenControlOptions">
-  <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+<agm-map [latitude]="latitude" [longitude]="longitude" mapTypeControl="options.mapTypeControl" [mapTypeControlOptions]="options.mapTypeControlOptions" streetViewControl="options.streetViewControl" [streetViewControlOptions]="options.streetViewControlOptions"
+    fullscreenControl="options.fullscreenControl" [fullscreenControlOptions]="options.fullscreenControlOptions" [fitBounds]="options.LatLngBounds">
+
+  <agm-marker *ngFor="let marker of mapMarkers; let i = index" (markerClick)="clickMarker(marker.label, marker)" [latitude]="marker.latitude" [longitude]="marker.longitude" [label]="marker.label" [markerDraggable]="marker.draggable" (dragEnd)="markerDragEnd(m, $event)"></agm-marker>
+
 </agm-map>

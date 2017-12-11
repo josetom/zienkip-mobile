@@ -7,5 +7,5 @@
     <ui-creator type="autocomplete" [options]="data.items"></ui-creator>
   </div>
 
-  <maps [latitude]="latitude" [longitude]="longitude" streetViewControl="true" mapTypeControl="true" fullscreenControl="true"></maps>
+  <maps [latitude]="latitude" [longitude]="longitude" [options]="options" [markers]="data.items" [onDataChange]="onDataChange.bind(this)"></maps>
 </ion-content>

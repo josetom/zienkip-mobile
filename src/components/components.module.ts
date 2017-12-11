@@ -42,6 +42,8 @@ import { MapsComponent } from './maps/maps';
 import { UiCreatorComponent } from './ui-creator/ui-creator';
 import { AutocompleteComponent } from './autocomplete/autocomplete';
 
+import { UtilitiesProvider } from '../providers/utilities/utilities';
+
 @NgModule({
 	declarations: [
 		PageTopComponent,
@@ -93,6 +95,9 @@ import { AutocompleteComponent } from './autocomplete/autocomplete';
 		MapsComponent,
 		UiCreatorComponent,
 		AutocompleteComponent
+	],
+	providers: [
+		UtilitiesProvider
 	]
 })
 export class ComponentsModule { }
