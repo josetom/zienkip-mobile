@@ -7,6 +7,6 @@
 	},
 	"proxies": [{
 		"path": "/api",
-		"proxyUrl": "http://Joses-MacBook-Pro.local:8765/api/"
+		"proxyUrl": "http://192.168.1.104:8765/api/"
 	}]
 }
