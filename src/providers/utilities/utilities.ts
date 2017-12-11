@@ -2,17 +2,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
-import { Platform, AlertController } from 'ionic-angular';
+import { Platform, AlertController, LoadingController } from 'ionic-angular';
 
 import { LoggerProvider } from '../logger/logger';
 import { StaticDataProvider } from '../static-data/static-data';
+
+import { Constants } from '../../model/constants/constants';
 
 // import { PushNotification } from '../../native/push-notification/push-notification';
 
 @Injectable()
 export class UtilitiesProvider {
 
-	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private platform: Platform, private alertCtrl: AlertController, private storage: Storage) {
+	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private platform: Platform, private alertCtrl: AlertController, private storage: Storage, private loadingCtrl: LoadingController) {
 
 	}
 
@@ -25,7 +27,7 @@ export class UtilitiesProvider {
 	 * @param data : request data
 	 * @param httpOptions : HTTP request options
 	 *
-	 * @return Observable<any>
+	 * @return Observable<any>	: subscribe to the Observable and handle the callbacks
 	 **/
 	httpRequest: Function = (method: string, url: string, data: any, httpOptions: any): Observable<any> => {
 		let defaultHttpOptions = {
@@ -64,7 +66,7 @@ export class UtilitiesProvider {
 	};
 
 	/**
-	 * Function to set token and bos
+	 * Function to set token and bos and initialize native components
 	 *
 	 * @param token : Token string
 	 * @param bos : api url
@@ -87,6 +89,23 @@ export class UtilitiesProvider {
 		this.initNativeComponents();
 	}
 
+	/**
+	 * initializes all the required native components
+	 **/
+	private initNativeComponents: Function = () => {
+		this.LOGGER.debug("Initializing native plugins", this.platform);
+		if (this.platform.is('cordova')) {
+			// PushNotification.init();
+		}
+	}
+
+	/**
+	 * Creates an alert with given details
+	 *
+	 * @param title		: Title text
+	 * @param message	: Alert message
+	 * @param buttons	: Array of buttons
+	 **/
 	showAlert: Function = (title: string, message: string, buttons: Array<string>) => {
 		this.alertCtrl.create({
 			title: title,
@@ -95,12 +114,38 @@ export class UtilitiesProvider {
 		}).present();
 	}
 
+	/**
+	 * Displays a loading icon box
+	 *
+	 * @param content	: content to be displayed with spinner
+	 *
+	 * @return cancelHook	: Function that needs to be called to dismiss the loader
+	 **/
+	showLoading: Function = (content: string) => {
+		let loading = this.loadingCtrl.create({
+			content: content
+		});
 
-	private initNativeComponents: Function = () => {
-		this.LOGGER.debug("Initializing native plugins", this.platform);
-		if (this.platform.is('cordova')) {
-			// PushNotification.init();
+		loading.present();
+
+		let cancelHook: Function = () => {
+			loading.dismiss();
 		}
+
+		return cancelHook;
+	}
+
+	/**
+	 * Displays a loading icon box
+	 *
+	 * @param successCallback	: authenticate success callback
+	 * @param failureCallback	: authenticate failure callback
+	 **/
+	authenticate: Function = (successCallback: Function, failureCallback: Function) => {
+		this.storage.get('kipenzi-token').then((token: string) => {
+			StaticDataProvider.token = token;
+			this.httpRequest(Constants.HTTP_POST, Constants.URL_AUTHENTICATE).subscribe(successCallback, failureCallback);
+		});
 	}
 
 }

@@ -4,6 +4,7 @@ export class Constants {
 
 	// server urls
 	static URL_LOGIN: string = "/api/login";
+	static URL_AUTHENTICATE: string = "/api/authenticate";
 	static URL_ENTITY: string = "/api/trade/fleet/entity";
 
 	// http methods

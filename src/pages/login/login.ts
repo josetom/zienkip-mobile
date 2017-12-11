@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { LoggerProvider } from '../../providers/logger/logger';
@@ -16,7 +16,7 @@ import { RootPage } from '../root/root';
 	templateUrl: 'login.html',
 })
 
-export class LoginPage {
+export class LoginPage implements OnInit {
 
 	user: Employee = new Employee();
 
@@ -26,7 +26,14 @@ export class LoginPage {
 		alertText: 'Unable to login. Please contact support'
 	};
 
+	private loadingCancelHook: Function;
+
 	constructor(public navCtrl: NavController, public navParams: NavParams, private LOGGER: LoggerProvider, private utils: UtilitiesProvider) {
+	}
+
+	ngOnInit() {
+		// this.loadingCancelHook = this.utils.showLoading('Loading ...');
+		// this.utils.authenticate(this.loginSuccess, () => { this.loadingCancelHook.apply(this, []); })
 	}
 
 	private loginSuccess: Function = (data) => {
@@ -35,6 +42,10 @@ export class LoginPage {
 
 			this.utils.postLogin(data.token, data.bos);
 			this.navCtrl.push(RootPage, { token: data.token });
+
+			if (this.loadingCancelHook) {
+				this.loadingCancelHook.apply(this, []);
+			}
 
 		} else {
 			this.loginFailure(data);
@@ -51,11 +62,18 @@ export class LoginPage {
 			this.loginAlert.visible = true;
 			this.loginAlert.alertText = data.message || 'Unable to login. Please contact support';
 		}
+
+		if (this.loadingCancelHook) {
+			this.loadingCancelHook.apply(this, []);
+		}
+
 		this.utils.showAlert(this.loginAlert.alertTitle, this.loginAlert.alertText, ['OK']);
 
 	}
 
-	login: Function = () => {
+	private login: Function = () => {
+
+		this.loadingCancelHook = this.utils.showLoading('Logging in ...');
 
 		let data: any = {
 			username: this.user.email,
