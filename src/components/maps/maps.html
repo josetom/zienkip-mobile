@@ -1,6 +1,30 @@
 <agm-map [latitude]="latitude" [longitude]="longitude" mapTypeControl="options.mapTypeControl" [mapTypeControlOptions]="options.mapTypeControlOptions" streetViewControl="options.streetViewControl" [streetViewControlOptions]="options.streetViewControlOptions"
     fullscreenControl="options.fullscreenControl" [fullscreenControlOptions]="options.fullscreenControlOptions" [fitBounds]="options.LatLngBounds">
 
-  <agm-marker *ngFor="let marker of mapMarkers; let i = index" (markerClick)="clickMarker(marker.label, marker)" [latitude]="marker.latitude" [longitude]="marker.longitude" [label]="marker.label" [markerDraggable]="marker.draggable" (dragEnd)="markerDragEnd(m, $event)"></agm-marker>
+  <agm-marker *ngFor="let marker of mapMarkers; let i = index" (markerClick)="clickMarker(marker)" [latitude]="marker.latitude" [longitude]="marker.longitude" [label]="marker.label" [markerDraggable]="marker.draggable" (dragEnd)="markerDragEnd(m, $event)">
+    <!-- iconUrl="/assets/imgs/truck-marker.png" -->
+
+    <agm-info-window max-width="180">
+      <div>
+        <label>Regn. No :&nbsp;</label>
+        <strong><span [innerHTML]="marker.vehicle.regNo"></span></strong>
+        <br/>
+        <label>Ignition :&nbsp;</label>
+        <span [innerHTML]="marker.vehicle.telematicData_ignition_mod"></span>
+        <br/>
+        <label>Speed :&nbsp;</label>
+        <span [innerHTML]="marker.vehicle.telematicData_speed_mod"></span>
+        <br/>
+        <label>Location :&nbsp;</label>
+        <span [innerHTML]="marker.vehicle.telematicData_location_mod"></span>
+        <br/>
+        <span *ngIf="marker.vehicle.telematicData_temperature_mod">
+            <label>Temperature :&nbsp;</label>
+            <span [innerHTML]="marker.vehicle.telematicData_temperature_mod"></span>
+        </span>
+      </div>
+    </agm-info-window>
+
+  </agm-marker>
 
 </agm-map>

@@ -3,6 +3,7 @@ import { ControlPosition, MapTypeControlStyle, MapTypeControlOptions, StreetView
 import { AgmMap, MapsAPILoader } from '@agm/core';
 
 import { UtilitiesProvider } from '../../providers/utilities/utilities';
+import { LoggerProvider } from '../../providers/logger/logger';
 
 @Component({
 	selector: 'maps',
@@ -30,11 +31,15 @@ export class MapsComponent implements OnChanges {
 	generateBounds: Function = (markers) => {
 		let google: any = window['google'];
 
+		this.LOGGER.log("generating bounds for ", markers);
+
 		if (google && markers && markers.length > 0) {
 			var bounds = new google.maps.LatLngBounds();
 
 			markers.forEach((marker: any) => {
-				bounds.extend(new google.maps.LatLng({ lat: marker.latitude, lng: marker.longitude }));
+				if (!this.utils.isEmpty(marker.latitude) && !this.utils.isEmpty(marker.longitude)) {
+					bounds.extend(new google.maps.LatLng({ lat: marker.latitude, lng: marker.longitude }));
+				}
 			});
 
 			//check if there is only one marker
@@ -58,7 +63,11 @@ export class MapsComponent implements OnChanges {
 		return {};
 	}
 
-	constructor(private utils: UtilitiesProvider, private mapsAPILoader: MapsAPILoader) {
+	clickMarker: Function = (marker: any) => {
+		// this.LOGGER.debug('clicked marker', marker);
+	}
+
+	constructor(private utils: UtilitiesProvider, private mapsAPILoader: MapsAPILoader, private LOGGER: LoggerProvider) {
 
 		let defaultOptions = {
 			mapTypeControl: false,

@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { LoggerProvider } from '../../providers/logger/logger';
 import { UtilitiesProvider } from '../../providers/utilities/utilities';
-import { StaticDataProvider } from '../../providers/static-data/static-data';
 
 import { Employee } from '../../model/vo/vo.entity';
 import { Constants } from '../../model/constants/constants';
@@ -71,7 +70,7 @@ export class LoginPage implements OnInit {
 
 	}
 
-	private login: Function = () => {
+	login: Function = () => {
 
 		this.loadingCancelHook = this.utils.showLoading('Logging in ...');
 

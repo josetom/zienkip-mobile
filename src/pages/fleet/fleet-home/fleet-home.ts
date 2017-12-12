@@ -14,9 +14,6 @@ export class FleetHomePage {
 
 	title: string = 'Home';
 
-	latitude: number = 13.0353193;
-	longitude: number = 80.250078;
-
 	options: any = {
 		streetViewControl: true,
 		mapTypeControl: true,
@@ -27,7 +24,7 @@ export class FleetHomePage {
 
 	onDataChange: Function = (items) => {
 		let retItems = items.filter(function(vehicle) {
-			if (vehicle && vehicle.telematicData && vehicle.telematicData.gps && vehicle.telematicData.gps.location) {
+			if (vehicle && vehicle.telematicData && vehicle.telematicData.gps && vehicle.telematicData.gps.location && (vehicle.telematicData.gps.location.lat > 0 || vehicle.telematicData.gps.location.long > 0)) {
 				return true;
 			} else {
 				return false;
