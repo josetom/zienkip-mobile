@@ -12,7 +12,7 @@ module.exports = {
 
 	copyMomentTimezone: {
 		src: ['{{ROOT}}/node_modules/moment-timezone/data/meta/latest.json'],
-		dest: '{{BUILD}}/node_modules/moment-timezone/data/meta'
+		dest: '{{WWW}}/node_modules/moment-timezone/data/meta'
 	}
 
 };
