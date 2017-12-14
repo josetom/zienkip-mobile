@@ -6,8 +6,7 @@ import { Platform, AlertController, LoadingController } from 'ionic-angular';
 
 import * as moment from 'moment-timezone';
 
-import { LoggerProvider } from '../logger/logger';
-import { StaticDataProvider } from '../static-data/static-data';
+import { LoggerProvider, StaticDataProvider } from '../providers';
 
 import { Constants } from '../../model/constants/constants';
 import { Organization, Employee } from '../../model/vo/vo.entity';
@@ -17,7 +16,7 @@ import { Organization, Employee } from '../../model/vo/vo.entity';
 @Injectable()
 export class UtilitiesProvider {
 
-	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private platform: Platform, private alertCtrl: AlertController, private storage: Storage, private loadingCtrl: LoadingController) {
+	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private storage: Storage, private platform: Platform, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
 
 	}
 
@@ -37,7 +36,7 @@ export class UtilitiesProvider {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + StaticDataProvider.token })
 		};
 		httpOptions = Object.assign(defaultHttpOptions, httpOptions);
-		return this.http.post(url, data, httpOptions);
+		return this.http[method](url, data, httpOptions);
 	}
 
 	/**
@@ -147,7 +146,7 @@ export class UtilitiesProvider {
 	authenticate = (successCallback: Function, failureCallback?: Function): void => {
 		this.storage.get('kipenzi-token').then((token: string) => {
 			StaticDataProvider.token = token;
-			this.httpRequest(Constants.HTTP_POST, Constants.URL_AUTHENTICATE).subscribe(successCallback, failureCallback);
+			this.httpRequest(Constants.HTTP_POST, Constants.API_AUTHENTICATE).subscribe(successCallback, failureCallback);
 		});
 	}
 

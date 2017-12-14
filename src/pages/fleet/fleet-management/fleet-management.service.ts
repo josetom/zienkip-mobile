@@ -57,7 +57,7 @@ export class FleetManagementService implements IManagement {
 				resolveDeps: false
 			};
 
-			this.utils.httpRequest(Constants.HTTP_POST, Constants.URL_ENTITY, data).subscribe(this.onLoadDataSuccess, this.onLoadDataFailure);
+			this.utils.httpRequest(Constants.HTTP_POST, Constants.API_ENTITY, data).subscribe(this.onLoadDataSuccess, this.onLoadDataFailure);
 
 		} else {
 			this.LOGGER.debug('Data already loaded', this.data);

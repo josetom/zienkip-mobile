@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
-import { LoggerProvider } from '../../providers/logger/logger'
-import { UtilitiesProvider } from '../../providers/utilities/utilities'
+import { LoggerProvider, UtilitiesProvider, StaticDataProvider } from '../../providers/providers';
 
 import { ComponentsModule } from '../../components/components.module';
 
@@ -21,8 +20,11 @@ import { FleetManagementService } from './fleet-management/fleet-management.serv
 		ComponentsModule
 	],
 	providers: [
+		// providers
 		LoggerProvider,
 		UtilitiesProvider,
+		StaticDataProvider,
+		// services
 		FleetManagementService
 	]
 })

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { LoggerProvider } from '../../providers/logger/logger';
-import { UtilitiesProvider } from '../../providers/utilities/utilities';
+import { LoggerProvider, UtilitiesProvider, StaticDataProvider } from '../../providers/providers';
 
 import { Employee } from '../../model/vo/vo.entity';
 import { Constants } from '../../model/constants/constants';
@@ -81,7 +80,7 @@ export class LoginPage implements OnInit {
 			domain: window.location.origin
 		}
 
-		this.utils.httpRequest(Constants.HTTP_POST, Constants.URL_LOGIN, data).subscribe(this.loginSuccess, this.loginFailure);
+		this.utils.httpRequest(Constants.HTTP_POST, Constants.API_LOGIN, data).subscribe(this.loginSuccess, this.loginFailure);
 
 	}
 

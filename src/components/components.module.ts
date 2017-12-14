@@ -42,7 +42,9 @@ import { MapsComponent } from './maps/maps';
 import { UiCreatorComponent } from './ui-creator/ui-creator';
 import { AutocompleteComponent } from './autocomplete/autocomplete';
 
-import { UtilitiesProvider } from '../providers/utilities/utilities';
+import { LoggerProvider, UtilitiesProvider, StaticDataProvider } from '../providers/providers';
+
+import { Constants } from '../model/constants/constants';
 
 @NgModule({
 	declarations: [
@@ -54,7 +56,8 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
 	imports: [
 		IonicModule.forRoot(ComponentsModule),
 		AgmCoreModule.forRoot({
-			apiKey: 'AIzaSyBZwjtfxXrP_lYHayzysutAU8ucbrwky-E'
+			apiKey: Constants.MAPS_API_KEY,
+			region: Constants.MAPS_REGION
 		}),
 		BrowserAnimationsModule,
 		MatAutocompleteModule,
@@ -97,7 +100,9 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
 		AutocompleteComponent
 	],
 	providers: [
-		UtilitiesProvider
+		LoggerProvider,
+		UtilitiesProvider,
+		StaticDataProvider
 	]
 })
 export class ComponentsModule { }
