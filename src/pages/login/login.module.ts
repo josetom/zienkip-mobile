@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { LoggerProvider } from '../../providers/logger/logger';
-import { UtilitiesProvider } from '../../providers/utilities/utilities';
-import { StaticDataProvider } from '../../providers/static-data/static-data';
+import { LoggerProvider, UtilitiesProvider, StaticDataProvider } from '../../providers/providers';
 
 import { LoginPage } from './login';
 
@@ -17,7 +15,9 @@ import { LoginPage } from './login';
 		IonicStorageModule.forRoot()
 	],
 	providers: [
+		// app
 		LoggerProvider,
+		UtilitiesProvider,
 		StaticDataProvider
 	]
 })

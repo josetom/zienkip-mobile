@@ -40,19 +40,25 @@ export class StaticDataProvider {
 
 	static staticData = {};
 
-	loadStaticData = () => {
+	loadStaticData = (): Observable<any> => {
 
 		let dataLoadPromises = [];
-		let preDataLoadPromises = [];
+		let preDataLoadObservables = [];
 
-		let onPreDataLoadPromises = () => {
-			StaticDataProvider.staticData['countries'][0].states.forEach(function(state) {
-				StaticDataProvider.staticData['permitTypes'].push({
-					display: state.display + " - State Permit",
-					value: state.value
-				})
-			});
+		let modifyStaticData = () => {
+			if (StaticDataProvider.staticData) {
+				if (StaticDataProvider.staticData['countries']) {
+					StaticDataProvider.staticData['countries'][0].states.forEach(function(state) {
+						StaticDataProvider.staticData['permitTypes'].push({
+							display: state.display + " - State Permit",
+							value: state.value
+						})
+					});
+				}
+			}
+		}
 
+		let setDataLoadPromises = () => {
 			// var bos = [];
 			// if (typeof utilFactory.getAllBOs == "function") {
 			// 	bos = utilFactory.getAllBOs();
@@ -72,17 +78,16 @@ export class StaticDataProvider {
 			// 		}
 			// 	}
 			// });
-
 		}
 
-		// var onDataLoadPromises = function() {
-		// 	Object.keys(fac.factories).forEach(function(factoryName) {
-		// 		var factory = fac.factories[factoryName];
-		// 		if (factory && factory.data && factory.data.clone) {
-		// 			utilFactory.specialHandlingForReportsAndClone(factory.data.clone, factory.data.reportParams, factory.data.items, factory.specialHandling, factory.data.clone);
-		// 		}
-		// 	});
-		// }
+		var onDataLoadPromises = function() {
+			// Object.keys(fac.factories).forEach(function(factoryName) {
+			// 	var factory = fac.factories[factoryName];
+			// 	if (factory && factory.data && factory.data.clone) {
+			// 		utilFactory.specialHandlingForReportsAndClone(factory.data.clone, factory.data.reportParams, factory.data.items, factory.specialHandling, factory.data.clone);
+			// 	}
+			// });
+		}
 
 		// var loadTruckBrands = function () {
 		//
@@ -113,7 +118,12 @@ export class StaticDataProvider {
 		// 	return loadTruckBrandsDeferred.promise;
 		// };
 
-		let loadConstants = () => {
+		/**
+		 * Loads the constants from the DB
+		 *
+		 * @return Observable
+		 **/
+		let loadConstants = (): Observable<any> => {
 
 			let observable = (observer): void => {
 
@@ -128,12 +138,12 @@ export class StaticDataProvider {
 
 				let loadConstantsSuccess = (response): void => {
 					this.LOGGER.debug("Fetched all constants", response);
-					if (!this.utils.isEmpty(response.data) && response.data instanceof Array) {
-						response.data.forEach(function(constant) {
+					if (!this.utils.isEmpty(response) && response instanceof Array) {
+						response.forEach(function(constant) {
 							StaticDataProvider.staticData[constant.key] = constant.value;
 						});
 					}
-					observer.next();
+					observer.next(response);
 					observer.complete();
 				}
 
@@ -146,22 +156,26 @@ export class StaticDataProvider {
 
 			}
 
-			return observable;
+			return Observable.create(observable);
 
 		};
 
-		let loadConstantsObservable: Observable<any> = Observable.create(loadConstants());
 
-		let loadConstantFile = (key, filePath) => {
+		/**
+		 * Loads the constants file from server
+		 *
+		 * @return Observable
+		 **/
+		let loadConstantFile = (key, filePath): Observable<any> => {
 
 			let observable = (observer): void => {
 
 				let loadConstantFileSuccess = (response): void => {
 					this.LOGGER.debug("Fetched ", key, response);
 					if (!this.utils.isEmpty(response)) {
-						StaticDataProvider.staticData[key] = response.data;
+						StaticDataProvider.staticData[key] = response;
 					}
-					observer.next()
+					observer.next(response);
 					observer.complete();
 				}
 
@@ -174,35 +188,55 @@ export class StaticDataProvider {
 
 			}
 
-			return observable;
+			return Observable.create(observable);
 
 		}
 
-		let loadConstantFileObservable: Observable<any> = Observable.create(loadConstantFile(Constants.PARAMS_STATIC_DATA_LOAD.UI_CONSTANT_FILES[0].KEY, Constants.PARAMS_STATIC_DATA_LOAD.UI_CONSTANT_FILES[0].FILE_PATH));
+		let loadFactoryData = () => {
+			// 	$q.all(dataLoadPromises).then(function(datas) {
+			// 		deferred.resolve("Data Loaded" + datas);
+			// 		$log.debug("Static Data loaded " + datas, fac);
+			// 		onDataLoadPromises();
+			// 	},
+			// 		function(error) {
+			// 			$log.debug("Static Data load failed - dataLoadPromises " + error);
+			// 		})
+			// }, function(error) {
+			// 	$log.debug("Static Data load failed - preDataLoadObservables" + error);
+		}
 
-		loadConstantsObservable.subscribe();
-		loadConstantFileObservable.subscribe();
+		let onPreDataLoadPromises = () => {
+			modifyStaticData();
+			setDataLoadPromises();
+			loadFactoryData();
+		}
 
-		// preDataLoadPromises.push(loadTruckBrands());
-		// preDataLoadPromises.push(loadConstantFile("moment-timezone", "/bower_components/moment-timezone/data/meta/latest.json"));
-		//
-		// $q.all(preDataLoadPromises).then(function() {
-		//
-		// 	onPreDataLoadPromises();
-		//
-		// 	$q.all(dataLoadPromises).then(function(datas) {
-		// 		deferred.resolve("Data Loaded" + datas);
-		// 		$log.debug("Static Data loaded " + datas, fac);
-		// 		onDataLoadPromises();
-		// 	},
-		// 		function(error) {
-		// 			$log.debug("Static Data load failed - dataLoadPromises " + error);
-		// 		})
-		// }, function(error) {
-		// 	$log.debug("Static Data load failed - preDataLoadPromises" + error);
-		// });
-		//
-		// return deferred.promise;
+		/**
+		 * creates observables for all the static calls
+		 **/
+		preDataLoadObservables.push(loadConstants());
+		// preDataLoadObservables.push(loadTruckBrands());
+		Constants.PARAMS_STATIC_DATA_LOAD.UI_CONSTANT_FILES.forEach((file) => {
+			preDataLoadObservables.push(loadConstantFile(file.KEY, file.FILE_PATH));
+		})
+
+
+		let outerObservable = (observer) => {
+
+			Observable.forkJoin(preDataLoadObservables).subscribe({
+				next: (response) => { this.LOGGER.debug('Static data fork - ', response) },
+				error: (error) => { this.LOGGER.debug('Static data fork error - ', error) },
+				complete: () => {
+					onPreDataLoadPromises();
+					observer.next();
+					observer.complete();
+				}
+			});
+		}
+
+		return Observable.create(outerObservable);
+
+
 	}
 
 	constructor(private LOGGER: LoggerProvider, private utils: UtilitiesProvider) {
