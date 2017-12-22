@@ -37,7 +37,7 @@ export interface IManagementData {
     /**
      * Report parameters for the management screen
      **/
-	reportParams: any[];
+	reportParams: IManagementReportParams[];
 
     /**
      * Contains the clone of items which will not get updated unless underlying object is updated in server
@@ -48,4 +48,109 @@ export interface IManagementData {
      * Aggregated stats of the items
      **/
 	stats: any;
+}
+
+export interface IManagementReportParams {
+
+	/**
+	 * Server special handling
+	 **/
+	sh?: boolean;
+
+	/**
+	 * UI Meta
+	 **/
+	meta?: IManagementReportMeta;
+
+}
+
+export interface IManagementReportMeta {
+
+	/**
+	 * UI Special Handling
+	 **/
+	uish?: string;
+
+	/**
+	 * Display name
+	 **/
+	dn?: string;
+
+	/**
+	 * Display Order
+	 **/
+	do?: string;
+
+	/**
+	 * Visibility
+	 **/
+	v?: boolean;
+
+	/**
+	 * Filter
+	 **/
+	f?: string;
+
+	/**
+	 * Style
+	 **/
+	s?: any;
+
+	/**
+	 * Parent Object
+	 **/
+	p?: any;
+
+	/**
+	 * Async
+	 **/
+	q?: boolean;
+
+	/**
+	 * Column is sortable or not
+	 **/
+	sortable?: boolean;
+
+	/**
+	 * Click params
+	 **/
+	click?: string;
+
+	/**
+	 * Array of actions
+	 **/
+	actions?: IManagementActions[];
+}
+
+export interface IManagementActions {
+
+	/**
+	 * Details for function that decides whether the action is visible or not
+	 **/
+	show: any,
+
+	/**
+	 * Class
+	 **/
+	class: string,
+
+	/**
+	 * Click function details
+	 **/
+	click: any,
+
+	/**
+	 * Tooltip for the action
+	 **/
+	tooltip: string,
+
+	/**
+	 * Image class
+	 **/
+	imgClass: string,
+
+	/**
+	 * Aria label
+	 **/
+	ariaLabel: string
 }

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { IManagementReportParams } from '../../model/interfaces/management.interface';
 
 @Component({
 	selector: 'ui-creator',
@@ -29,5 +30,19 @@ export interface UiCreatorAutocomplete extends UiCreator {
 	 * Used for select / autocomplete components
 	 **/
 	options: any[];
+
+}
+
+export interface UiCreatorTable extends UiCreator {
+	/**
+	 * Report data
+	 **/
+	data: any[];
+
+	/**
+	 * Report params
+	 **/
+	reportParams: IManagementReportParams[];
+
 
 }
