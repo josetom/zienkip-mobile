@@ -5,11 +5,15 @@ import { IManagementReportParams } from '../../model/interfaces/management.inter
 	selector: 'ui-creator',
 	templateUrl: 'ui-creator.html'
 })
-export class UiCreatorComponent implements UiCreatorAutocomplete {
+export class UiCreatorComponent implements UiCreator, UiCreatorAutocomplete, UiCreatorTable {
 
 	@Input() type: string;
 
 	@Input() options: any[];
+
+	@Input() data: any[];
+
+	@Input() reportParams: IManagementReportParams[];
 
 	constructor() {
 
@@ -34,6 +38,7 @@ export interface UiCreatorAutocomplete extends UiCreator {
 }
 
 export interface UiCreatorTable extends UiCreator {
+
 	/**
 	 * Report data
 	 **/

@@ -1,18 +1,11 @@
-<!--
-  Generated template for the FleetManagementPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>fleet-management</ion-title>
+    <ion-title>Fleet Management</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content>
+  <ui-creator type="table" [data]="data.items" [reportParams]="data.reportParams"></ui-creator>
 </ion-content>

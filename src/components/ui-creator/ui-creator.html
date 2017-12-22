@@ -4,4 +4,8 @@
     <autocomplete [options]="options"></autocomplete>
   </div>
 
+  <div *ngSwitchCase="'table'">
+    <table type="table" [data]="data" [reportParams]="reportParams"></table>
+  </div>
+
 </div>

@@ -53,6 +53,11 @@ export interface IManagementData {
 export interface IManagementReportParams {
 
 	/**
+	 * Column Id
+	 **/
+	colId: string;
+
+	/**
 	 * Server special handling
 	 **/
 	sh?: boolean;

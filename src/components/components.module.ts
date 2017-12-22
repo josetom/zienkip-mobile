@@ -37,21 +37,23 @@ import {
 	MatStepperModule,
 } from '@angular/material';
 
+import { LoggerProvider, UtilitiesProvider, StaticDataProvider } from '../providers/providers';
+
+import { Constants } from '../model/constants/constants';
+
 import { PageTopComponent } from './page-top/page-top';
 import { MapsComponent } from './maps/maps';
 import { UiCreatorComponent } from './ui-creator/ui-creator';
 import { AutocompleteComponent } from './autocomplete/autocomplete';
-
-import { LoggerProvider, UtilitiesProvider, StaticDataProvider } from '../providers/providers';
-
-import { Constants } from '../model/constants/constants';
+import { TableComponent } from './table/table';
 
 @NgModule({
 	declarations: [
 		PageTopComponent,
 		MapsComponent,
 		UiCreatorComponent,
-		AutocompleteComponent
+		AutocompleteComponent,
+		TableComponent
 	],
 	imports: [
 		IonicModule.forRoot(ComponentsModule),
@@ -97,7 +99,8 @@ import { Constants } from '../model/constants/constants';
 		PageTopComponent,
 		MapsComponent,
 		UiCreatorComponent,
-		AutocompleteComponent
+		AutocompleteComponent,
+		TableComponent
 	],
 	providers: [
 		LoggerProvider,
