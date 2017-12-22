@@ -195,7 +195,7 @@ export class UtilitiesProvider {
 	 **/
 	findArrayObject: Function = (key: string, value: string, array: Array<any>, path: Array<string>): any => {
 		if (!this.isEmpty(array)) {
-			return array.find(function(a) {
+			return array.find((a) => {
 				if (path) {
 					for (let i = 0; i < path.length; i++) {
 						if (typeof a == 'object') {
@@ -224,7 +224,7 @@ export class UtilitiesProvider {
 			sourceIterator = updateKeys;
 		}
 
-		sourceIterator.forEach(function(key) {
+		sourceIterator.forEach((key) => {
 			sink[key] = source[key];
 
 		})
@@ -451,7 +451,7 @@ export class UtilitiesProvider {
 	 *
 	 *	@return string expiryState
 	 **/
-	getExpiryState = (expiryDate: Date, active: boolean, renewalDate: Date, cancelled: boolean): string => {
+	getExpiryState = (expiryDate: Date, active?: boolean, renewalDate?: Date, cancelled?: boolean): string => {
 
 		active = (this.isEmpty(active)) ? true : active;
 
@@ -584,7 +584,7 @@ export class UtilitiesProvider {
 				} else if (param.meta.uish == 'custom') {
 					// this.LOGGER.debug('special handling on reports - custom', item[param.colId], param.meta.q);
 					if (param.meta.q) {
-						let qHandler = function(result) {
+						let qHandler = (result) => {
 							item[param.colId] = result;
 							//this is required where a new object is pushed and callback comes after insertion
 							let newExistingItem = this.findArrayObject('id', item.id, sink);
@@ -597,16 +597,16 @@ export class UtilitiesProvider {
 							let newCloneIndex = clone.indexOf(newExistingClone);
 							let cloneUpdateKeys = this.deepClone(updateKeys);
 							if (replaceOrUpdate == 'update' && !this.isEmpty(updateKeys)) {
-								updateKeys.forEach(function(key) {
+								updateKeys.forEach((key) => {
 									cloneUpdateKeys.push(key + '_mod');
 									cloneUpdateKeys.push(key + '_count');
 								});
 							}
 							clone[newCloneIndex] = this.updateJSON(clonedItem, clone[newCloneIndex], cloneUpdateKeys);
 						}
-						customHandling(param.colId, item[param.colId], existingItem).then(function(result) {
+						customHandling(param.colId, item[param.colId], existingItem).subscribe((result) => {
 							qHandler(result);
-						}, function(error) {
+						}, (error) => {
 							let oldItem;
 							if (existingItem && existingItem[param.colId]) {
 								oldItem = existingItem[param.colId];
@@ -673,7 +673,7 @@ export class UtilitiesProvider {
 			};
 		}
 
-		arr.forEach(function(item, index) {
+		arr.forEach((item, index) => {
 			let expState = this.getExpiryState(new Date(item.to), item.active)
 			if (uish != 'date') {
 				item.status = expState;

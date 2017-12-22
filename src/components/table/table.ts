@@ -23,8 +23,6 @@ export class TableComponent implements AfterViewInit, OnChanges, UiCreatorTable 
 	exampleDatabase: ExampleHttpDao | null;
 	dataSource = new MatTableDataSource();
 
-	resultsLength = 0;
-	isLoading = false;
 	isError = false;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -69,7 +67,6 @@ export class TableComponent implements AfterViewInit, OnChanges, UiCreatorTable 
 			map(data => {
 				// Flip flag to show that loading has finished.
 				this.isError = false;
-				this.resultsLength = data.total_count;
 				if (this.loadingCancelHook) {
 					this.loadingCancelHook.apply(this, []);
 				}

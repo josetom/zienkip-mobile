@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Constants } from '../../../model/constants/constants';
 import { IManagement, IManagementData } from '../../../model/interfaces/management.interface';
@@ -29,7 +30,7 @@ export class FleetManagementService implements IManagement {
 		this.data.reportParams = response.clientReportDef;
 		this.data.items = response.clientResultSet;
 		this.data.clone = response.clientResultSet;
-		// this.utils.specialHandlingForReportsAndClone(this.data.items, this.data.reportParams, this.data.items, this.specialHandling, this.data.clone, undefined, undefined, this.postSpecialHandling);
+		this.utils.specialHandlingForReportsAndClone(this.data.items, this.data.reportParams, this.data.items, this.specialHandling, this.data.clone, undefined, undefined, this.postSpecialHandling);
 	}
 
 	onLoadDataFailure = (response: any): void => {
@@ -108,64 +109,85 @@ export class FleetManagementService implements IManagement {
 				return undefined;
 			}
 		}
-		// if (key == 'telematicData_location') {
-		// 	var deferred = $q.defer();
-		// 	$log.debug('printing existingEntity for telematicData_location', existingEntity);
-		// 	$log.debug('printing obj for telematicData_location', obj);
-		// 	if (!isEmpty(existingEntity) && !isEmpty(existingEntity.telematicData) && obj && obj.gps && obj.gps.location && obj.gps.location.lat && obj.gps.location.long) {
-		// 		// remove log statements from here
-		// 		// $log.debug('new ignition', obj.ignition);
-		// 		// $log.debug('existing ignition', existingEntity.telematicData.ignition);
-		// 		// $log.debug('new timestamp', obj.unixTimeStamp);
-		// 		// $log.debug('new latlong', obj.gps.location);
-		// 		// if (!isEmpty(existingEntity.telematicData.gps) && !isEmpty(existingEntity.locationDetails)) {
-		// 		// 	$log.debug('existing latlong', existingEntity.telematicData.gps.location);
-		// 		// 	$log.debug('distance', utilFactory.getDistanceBetweenCoordinates(obj.gps.location, existingEntity.locationDetails.coordinates));
-		// 		// }
-		// 		// if (!isEmpty(existingEntity.locationDetails)) {
-		// 		// 	$log.debug('existing location', existingEntity.locationDetails.location);
-		// 		// 	$log.debug('existing timestamp', existingEntity.locationDetails.last_location_updated_at);
-		// 		// 	$log.debug('time difference in seconds', utilFactory.getTimeDifference(obj.unixTimeStamp, existingEntity.locationDetails.last_location_updated_at, 's'));
-		// 		// }
-		// 		// remove log statements till here
-		// 		if (existingEntity.locationDetails && !isEmpty(existingEntity.locationDetails.location) && !isEmpty(existingEntity.locationDetails.last_location_updated_at) && utilFactory.getTimeDifference(obj.unixTimeStamp, existingEntity.locationDetails.last_location_updated_at, 's') < 120) {
-		// 			$log.debug('reverse geocoding skipped: low time diff, existingEntity,obj', existingEntity, obj);
-		// 			// dont make a call if previous location exists and time difference is less than 2 minutes
-		// 			deferred.resolve(existingEntity.telematicData_location);
-		// 		} else if (existingEntity.locationDetails && !isEmpty(existingEntity.locationDetails.location) && existingEntity.telematicData.ignition == 0 && obj.ignition == 0) {
-		// 			$log.debug('reverse geocoding skipped: vehicle idle, existingEntity,obj', existingEntity, obj);
-		// 			// dont make a call if previous location exists and vehicle is still idle
-		// 			deferred.resolve(existingEntity.telematicData_location);
-		// 		} else if (existingEntity.locationDetails && !isEmpty(existingEntity.locationDetails.location) && obj.ignition == 1 && existingEntity.locationDetails.coordinates && existingEntity.locationDetails.coordinates.lat && existingEntity.locationDetails.coordinates.long && utilFactory.getDistanceBetweenCoordinates(obj.gps.location, existingEntity.locationDetails.coordinates) < 0.5) {
-		// 			$log.debug('reverse geocoding skipped: short distance, existingEntity,obj', existingEntity, obj);
-		// 			// dont make a call if previous location exists and distance change is less than 0.5 km
-		// 			deferred.resolve(existingEntity.telematicData_location);
-		// 		} else {
-		// 			$log.debug('ready for reverse geocoding', existingEntity, obj);
-		// 			utilFactory.reverseGeoCode(obj.gps.location.lat, obj.gps.location.long, function(err, result) {
-		// 				if (err) {
-		// 					$log.debug('Location unknown', obj, err);
-		// 					deferred.reject('Location Unknown !!');
-		// 				} else if (result) {
-		// 					$log.debug('Location known', obj, result);
-		// 					$log.debug('Vehicle Id', existingEntity.id);
-		// 					$log.debug('Fleet Management', fac.data.items);
-		// 					var vehicle = utilFactory.findArrayObject('id', existingEntity.id, fac.data.items);
-		// 					vehicle.locationDetails = {
-		// 						last_location_updated_at: obj.unixTimeStamp,
-		// 						coordinates: obj.gps.location,
-		// 						location: result.formatted_address
-		// 					};
-		// 					deferred.resolve(result.formatted_address);
-		// 				}
-		// 			});
-		// 		}
-		// 	} else {
-		// 		this.LOGGER.debug('else', existingEntity, obj);
-		// 		deferred.resolve(undefined);
-		// 	}
-		// 	return deferred.promise;
-		// }
+		if (key == 'telematicData_location') {
+			let observable = (observer): void => {
+
+				let loadConstantFileSuccess = (response): void => {
+					this.LOGGER.debug("Fetched ", key, response);
+					if (!this.utils.isEmpty(response)) {
+						StaticDataProvider.staticData[key] = response;
+					}
+					observer.next(response);
+					observer.complete();
+				}
+
+				let loadConstantFileFailure = (response): void => {
+					this.LOGGER.debug("Fetching constant file failed", response);
+					observer.error(response);
+				}
+
+				this.utils.httpRequest(Constants.HTTP_GET, "test").subscribe(loadConstantFileSuccess, loadConstantFileFailure);
+
+			}
+
+			return Observable.create(observable);
+			// 	var deferred = $q.defer();
+			// 	$log.debug('printing existingEntity for telematicData_location', existingEntity);
+			// 	$log.debug('printing obj for telematicData_location', obj);
+			// 	if (!isEmpty(existingEntity) && !isEmpty(existingEntity.telematicData) && obj && obj.gps && obj.gps.location && obj.gps.location.lat && obj.gps.location.long) {
+			// 		// remove log statements from here
+			// 		// $log.debug('new ignition', obj.ignition);
+			// 		// $log.debug('existing ignition', existingEntity.telematicData.ignition);
+			// 		// $log.debug('new timestamp', obj.unixTimeStamp);
+			// 		// $log.debug('new latlong', obj.gps.location);
+			// 		// if (!isEmpty(existingEntity.telematicData.gps) && !isEmpty(existingEntity.locationDetails)) {
+			// 		// 	$log.debug('existing latlong', existingEntity.telematicData.gps.location);
+			// 		// 	$log.debug('distance', utilFactory.getDistanceBetweenCoordinates(obj.gps.location, existingEntity.locationDetails.coordinates));
+			// 		// }
+			// 		// if (!isEmpty(existingEntity.locationDetails)) {
+			// 		// 	$log.debug('existing location', existingEntity.locationDetails.location);
+			// 		// 	$log.debug('existing timestamp', existingEntity.locationDetails.last_location_updated_at);
+			// 		// 	$log.debug('time difference in seconds', utilFactory.getTimeDifference(obj.unixTimeStamp, existingEntity.locationDetails.last_location_updated_at, 's'));
+			// 		// }
+			// 		// remove log statements till here
+			// 		if (existingEntity.locationDetails && !isEmpty(existingEntity.locationDetails.location) && !isEmpty(existingEntity.locationDetails.last_location_updated_at) && utilFactory.getTimeDifference(obj.unixTimeStamp, existingEntity.locationDetails.last_location_updated_at, 's') < 120) {
+			// 			$log.debug('reverse geocoding skipped: low time diff, existingEntity,obj', existingEntity, obj);
+			// 			// dont make a call if previous location exists and time difference is less than 2 minutes
+			// 			deferred.resolve(existingEntity.telematicData_location);
+			// 		} else if (existingEntity.locationDetails && !isEmpty(existingEntity.locationDetails.location) && existingEntity.telematicData.ignition == 0 && obj.ignition == 0) {
+			// 			$log.debug('reverse geocoding skipped: vehicle idle, existingEntity,obj', existingEntity, obj);
+			// 			// dont make a call if previous location exists and vehicle is still idle
+			// 			deferred.resolve(existingEntity.telematicData_location);
+			// 		} else if (existingEntity.locationDetails && !isEmpty(existingEntity.locationDetails.location) && obj.ignition == 1 && existingEntity.locationDetails.coordinates && existingEntity.locationDetails.coordinates.lat && existingEntity.locationDetails.coordinates.long && utilFactory.getDistanceBetweenCoordinates(obj.gps.location, existingEntity.locationDetails.coordinates) < 0.5) {
+			// 			$log.debug('reverse geocoding skipped: short distance, existingEntity,obj', existingEntity, obj);
+			// 			// dont make a call if previous location exists and distance change is less than 0.5 km
+			// 			deferred.resolve(existingEntity.telematicData_location);
+			// 		} else {
+			// 			$log.debug('ready for reverse geocoding', existingEntity, obj);
+			// 			utilFactory.reverseGeoCode(obj.gps.location.lat, obj.gps.location.long, function(err, result) {
+			// 				if (err) {
+			// 					$log.debug('Location unknown', obj, err);
+			// 					deferred.reject('Location Unknown !!');
+			// 				} else if (result) {
+			// 					$log.debug('Location known', obj, result);
+			// 					$log.debug('Vehicle Id', existingEntity.id);
+			// 					$log.debug('Fleet Management', fac.data.items);
+			// 					var vehicle = utilFactory.findArrayObject('id', existingEntity.id, fac.data.items);
+			// 					vehicle.locationDetails = {
+			// 						last_location_updated_at: obj.unixTimeStamp,
+			// 						coordinates: obj.gps.location,
+			// 						location: result.formatted_address
+			// 					};
+			// 					deferred.resolve(result.formatted_address);
+			// 				}
+			// 			});
+			// 		}
+			// 	} else {
+			// 		this.LOGGER.debug('else', existingEntity, obj);
+			// 		deferred.resolve(undefined);
+			// 	}
+			// 	return deferred.promise;
+		}
 		if (key == 'telematicData_unixTimeStamp') {
 			if (!this.utils.isEmpty(obj) && obj.unixTimeStamp) {
 				return obj.unixTimeStamp;
@@ -196,13 +218,13 @@ export class FleetManagementService implements IManagement {
 		this.data.stats.vehicleLegals = {};
 		this.data.stats.vehicleStatus = {};
 
-		this.data.clone.forEach(function(item) {
+		this.data.clone.forEach((item) => {
 			if (!this.utils.isEmpty(item)) {
 				var regex = /(.*?)_count$/;
-				Object.keys(item).forEach(function(key) {
+				Object.keys(item).forEach((key) => {
 					// Vehicle legals update
 					if (regex.test(key) && !this.utils.isEmpty(item[key])) {
-						Object.keys(item[key]).forEach(function(expState) {
+						Object.keys(item[key]).forEach((expState) => {
 							this.data.stats.vehicleLegals[expState] = (this.data.stats.vehicleLegals[expState]) ? (this.data.stats.vehicleLegals[expState] + item[key][expState]) : (item[key][expState]);
 						})
 					}

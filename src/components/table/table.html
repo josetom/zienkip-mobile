@@ -7,17 +7,17 @@
 
   <mat-table #table [dataSource]="dataSource" class="material-table" matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
 
-    <ng-container *ngFor="let columnIterator of reportParams" [matColumnDef]="columnIterator.colId">
+    <ng-container *ngFor="let columnIterator of reportParams | orderBy: 'meta.do'" [matColumnDef]="columnIterator.colId">
       <mat-header-cell *matHeaderCellDef mat-sort-header disableClear="true">
         {{columnIterator.meta.dn}}
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row[columnIterator.colId] }}</mat-cell>
+      <mat-cell *matCellDef="let row" [innerHTML]="row[columnIterator.colId + '_mod'] || row[columnIterator.colId]"></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="reportColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: reportColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="30">
+  <mat-paginator [length]="dataSource.data.length" [pageSize]="30">
   </mat-paginator>
 </div>
