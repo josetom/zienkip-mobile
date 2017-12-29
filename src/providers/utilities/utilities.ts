@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 import { Platform, AlertController, LoadingController } from 'ionic-angular';
@@ -16,7 +16,12 @@ import { Organization, Employee } from '../../model/vo/vo.entity';
 @Injectable()
 export class UtilitiesProvider {
 
-	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private storage: Storage, private platform: Platform, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+	private staticData: StaticDataProvider;
+
+	/**
+	 * All app providers can have dependency with UtilitiesProvider, so use injector to inject and use them
+	 **/
+	constructor(private http: HttpClient, private LOGGER: LoggerProvider, private storage: Storage, private platform: Platform, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private injector: Injector) {
 
 	}
 
@@ -77,6 +82,8 @@ export class UtilitiesProvider {
 		StaticDataProvider.token = token;
 		StaticDataProvider.bos = bos;
 
+		this.staticData = this.injector.get(StaticDataProvider);
+
 		let tokenString = JSON.stringify(token);
 		if (tokenString) {
 			let token = tokenString.substring(1, tokenString.length - 1);
@@ -88,6 +95,7 @@ export class UtilitiesProvider {
 			this.storage.set('kipenzi-bos', boString);
 		}
 
+		this.staticData.loadStaticData().subscribe();
 		this.initNativeComponents();
 	}
 
